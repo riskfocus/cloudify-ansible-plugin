@@ -55,16 +55,17 @@ def ansible_playbook(playbooks, inventory=list(), extravars='', **kwargs):
 
     inventory_path = utils.get_inventory_path(inventory)
     ctx.logger.info('Inventory path: {}.'.format(inventory_path))
-    extraargs = '--extra-vars "{}"'.format(extravars) if extravars else ''
+    extraargs = ' --extra-vars "{}"'.format(extravars) if extravars else ''
     for playbook in playbooks:
         playbook_path = utils.get_playbook_path(playbook)
         ctx.logger.info('Playbook path: {}.'.format(playbook_path))
         user = utils.get_agent_user()
-        command = ['ansible-playbook', '--sudo', '-u', user,
-                   '-i', inventory_path, '--timeout=60', '-vvvv']
-        if extraargs:
-            command += shlex.split(extraargs)
-        command += shlex.split(playbook_path)
+        # command = ['ansible-playbook', '--sudo', '-u', user,
+        #            '-i', inventory_path, '--timeout=60', '-vvvv']
+        # if extraargs:
+        #     command += shlex.split(extraargs)
+        # command += shlex.split(playbook_path)
+        command = 'ansible-playbook --sudo -u {} -i {} {} --timeout=60 -vvvv{}'.format(user,inventory_path,playbook_path,extraargs if extraargs else '')
         ctx.logger.info('Running command: {}.'.format(command))
         output = utils.run_command(command)
         ctx.logger.info('Command Output: {}.'.format(output))
