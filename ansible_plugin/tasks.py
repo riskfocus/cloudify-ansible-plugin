@@ -49,7 +49,7 @@ def configure(user=None, key=None, **kwargs):
 
 
 @operation
-def ansible_playbook(playbooks, inventory=list(), **kwargs):
+def ansible_playbook(playbooks, inventory=list(), extravars='', **kwargs):
     """ Runs a playbook as part of a Cloudify lifecycle operation """
 
     inventory_path = utils.get_inventory_path(inventory)
