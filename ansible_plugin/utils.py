@@ -160,6 +160,11 @@ def run_command(command):
     if run.returncode:
         ctx.logger.info('Non-zero return code. Stderr {}. Stdout {}'.format(stderr, stdout))
         try:
+            run = Popen(command, shell=True, stdout=PIPE, stderr=PIPE, preexec_fn=os.setsid)
+        except Exception as e:
+            raise exceptions.NonRecoverableError(
+                'Unable to run command. Error {}'.format(str(e)))
+        try:
             stdout, stderr = run.communicate()
         if run.returncode:
             raise exceptions.NonRecoverableError(
