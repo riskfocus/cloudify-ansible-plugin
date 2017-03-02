@@ -1,5 +1,5 @@
 ########
-# Copyright (c) 2014 GigaSpaces Technologies Ltd. All rights reserved
+# Copyright (c) 2017 Riskfocus LV Ltd. All rights reserved
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,13 +17,13 @@
 from setuptools import setup
 
 setup(
-    name='cloudify-ansible-plugin',
-    version='1.3a3',
-    author='Gigaspaces',
-    author_email='cosmo-admin@gigaspaces.com',
+    name='rf-ansible-plugin',
+    version='2.0.5',
+    author='Riskfocus',
+    author_email='riskfocus.com',
     description='Integrates with cloudify to deploy Ansible Playbooks',
     packages=['ansible_plugin'],
     license='LICENSE',
     zip_safe=False,
-    install_requires=["cloudify-plugins-common==3.3a3", "ansible==1.8.2"]
+    install_requires=["cloudify-plugins-common", "ansible", "requests"]
 )
