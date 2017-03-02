@@ -146,7 +146,7 @@ def write_configuration_file(config):
 
 def run_command(command):
     try:
-        run = Popen(command, shell=True, stdout=PIPE, stderr=PIPE, preexec_fn=os.setsid)
+        run = Popen(command, stdout=PIPE, stderr=PIPE)
     except Exception as e:
         raise exceptions.NonRecoverableError(
             'Unable to run command. Error {}'.format(str(e)))
