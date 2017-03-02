@@ -32,7 +32,7 @@ def configure(user=None, key=None, **kwargs):
 
     configuration = '[defaults]\n' \
                     'host_key_checking=False\n' \
-                    'private_key_file={0}\n'.format(agent_key_path)
+                    'private_key_file={}\n'.format(agent_key_path)
 
     ctx.logger.info('Configuring Anisble.')
     file_path = utils.write_configuration_file(configuration)
@@ -53,16 +53,16 @@ def ansible_playbook(playbooks, inventory=list(), **kwargs):
     """ Runs a playbook as part of a Cloudify lifecycle operation """
 
     inventory_path = utils.get_inventory_path(inventory)
-    ctx.logger.info('Inventory path: {0}.'.format(inventory_path))
-
+    ctx.logger.info('Inventory path: {}.'.format(inventory_path))
+    extraargs = '--extra-vars "{}"'.format(extravars) if extravars else ''
     for playbook in playbooks:
         playbook_path = utils.get_playbook_path(playbook)
-        ctx.logger.info('Playbook path: {0}.'.format(playbook_path))
+        ctx.logger.info('Playbook path: {}.'.format(playbook_path))
         user = utils.get_agent_user()
         command = ['ansible-playbook', '--sudo', '-u', user,
                    '-i', inventory_path, playbook_path,
-                   '--timeout=60', '-vvvv']
-        ctx.logger.info('Running command: {0}.'.format(command))
+                   '--timeout=60', '-vvvv', extraargs ]
+        ctx.logger.info('Running command: {}.'.format(command))
         output = utils.run_command(command)
-        ctx.logger.info('Command Output: {0}.'.format(output))
+        ctx.logger.info('Command Output: {}.'.format(output))
         ctx.logger.info('Finished running the Ansible Playbook.')

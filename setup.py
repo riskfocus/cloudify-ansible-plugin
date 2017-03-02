@@ -18,7 +18,7 @@ from setuptools import setup
 
 setup(
     name='rf-ansible-plugin',
-    version='2.0.5',
+    version='2.1.0',
     author='Riskfocus',
     author_email='riskfocus.com',
     description='Integrates with cloudify to deploy Ansible Playbooks',
