@@ -146,19 +146,23 @@ def write_configuration_file(config):
 
 def run_command(command):
     try:
-        run = Popen(command, stdout=PIPE)
+        run = Popen(command, shell=True, stdout=PIPE, stderr=PIPE, preexec_fn=os.setsid)
     except Exception as e:
         raise exceptions.NonRecoverableError(
             'Unable to run command. Error {}'.format(str(e)))
 
     try:
-        output = run.communicate()
+        stdout, stderr = run.communicate()
     except Exception as e:
         raise exceptions.NonRecoverableError(
             'Unable to run command. Error {}'.format(str(e)))
 
-    if run.returncode != 0:
-        raise exceptions.NonRecoverableError(
-            'Non-zero returncode. Output {}.'.format(output))
+    if run.returncode:
+        ctx.logger.info('Non-zero return code. Stderr {}. Stdout {}'.format(stderr, stdout))
+        try:
+            stdout, stderr = run.communicate()
+        if run.returncode:
+            raise exceptions.NonRecoverableError(
+                'Non-zero returncode. Stderr {}. Stdout {}.'.format(stderr, stdout))
 
-    return output
+    return stdout
