@@ -16,6 +16,7 @@
 # Built-in Imports
 import os
 import shutil
+import shlex
 
 # Third-party Imports
 
@@ -61,7 +62,9 @@ def ansible_playbook(playbooks, inventory=list(), extravars='', **kwargs):
         user = utils.get_agent_user()
         command = ['ansible-playbook', '--sudo', '-u', user,
                    '-i', inventory_path, playbook_path,
-                   '--timeout=60', '-vvvv', extraargs ]
+                   '--timeout=60', '-vvvv']
+        if extraargs:
+            command += shlex.split(extraargs)
         ctx.logger.info('Running command: {}.'.format(command))
         output = utils.run_command(command)
         ctx.logger.info('Command Output: {}.'.format(output))
